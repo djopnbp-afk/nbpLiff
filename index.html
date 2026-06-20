@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบบริหารผลงานกรรมการสงเคราะห์ - สถานพินิจฯ หนองบัวลำภู </title>
+    <title>ระบบจัดการผลงานกรรมการสงเคราะห์ - สถานพินิจฯ ขอนแก่น</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
@@ -63,11 +63,75 @@
         </div>
     </div>
 
+    <!-- 🆕 หน้าดูคะแนนกรรมการ สำหรับเจ้าหน้าที่ (เลือกชื่อแล้วดู dashboard เหมือนที่กรรมการเห็น) -->
+    <div id="staffScoreLookup" style="display: none;">
+        <!-- ตารางสรุปทุกคน -->
+        <div id="staffScoreTableView">
+            <div class="card card-custom p-4">
+                <div class="text-center mb-3">
+                    <h4 class="header-title"><i class="bi bi-bar-chart-fill"></i> สรุปคะแนนกรรมการสงเคราะห์</h4>
+                    <p class="text-muted small mb-0">ระบบสำหรับเจ้าหน้าที่สถานพินิจฯ ขอนแก่น</p>
+                </div>
+                <div class="mb-3">
+                    <input type="text" id="staffScoreSearchInput" class="form-control" placeholder="ค้นหาชื่อกรรมการ..." onkeyup="filterStaffScoreTable()">
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle small">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-start">ชื่อ-นามสกุล</th>
+                                <th class="text-center">คะแนนปีนี้</th>
+                                <th class="text-center">สะสมรวม</th>
+                            </tr>
+                        </thead>
+                        <tbody id="staffScoreTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- รายละเอียดรายบุคคล (แสดงตอนคลิกแถวจากตารางด้านบน) -->
+        <div id="staffScoreDetailView" style="display: none;">
+            <div class="card card-custom p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="text-primary fw-bold mb-0" id="staffScoreVolunteerName"></h5>
+                    <button class="btn btn-sm btn-outline-secondary rounded-pill" onclick="backToStaffScoreTable()">
+                        <i class="bi bi-arrow-left me-1"></i> กลับหน้าสรุป
+                    </button>
+                </div>
+                <div class="score-box">
+                    <div class="small opacity-75">คะแนนสะสมรอบปีปัจจุบัน</div>
+                    <h1 id="staffKpiScore" class="my-2">0 / 12</h1>
+                    <div class="progress">
+                        <div id="staffScoreBar" class="progress-bar bg-warning" style="width: 0%"></div>
+                    </div>
+                    <div id="staffStarRating" class="text-warning fs-4"></div>
+                </div>
+            </div>
+
+            <div class="card card-custom p-4">
+                <h5 class="mb-3 fw-bold"><i class="bi bi-clock-history"></i> สรุปรายละเอียดคะแนน </h5>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light small">
+                            <tr>
+                                <th class="text-start">รายการผลงาน</th>
+                                <th class="text-center">จำนวนครั้ง</th>
+                            </tr>
+                        </thead>
+                        <tbody id="staffSummaryTableBody" class="small"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="staffSection" style="display: none;">
         <div class="card card-custom p-4">
             <div class="text-center mb-4">
                 <h4 class="header-title"><i class="bi bi-pencil-square"></i> บันทึกผลงานใหม่</h4>
-                <p class="text-muted small">ระบบสำหรับเจ้าหน้าที่สถานพินิจฯ</p>
+                <p class="text-muted small">ระบบสำหรับเจ้าหน้าที่สถานพินิจฯ ขอนแก่น</p>
+
             </div>
 
             <form id="perfForm" class="row g-3">
@@ -127,8 +191,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbypvSok4qFXKAxkXi7OsEZ46L7yW7FRaNu_jwA_eBRWUZph-ZDr7D6KeUCq7s3h0hTQxg/exec";
-    const LIFF_ID = "2010457084-sEn3E7kN";
+    const WEB_APP_URL = "PUT_YOUR_V2_WEB_APP_URL_HERE";
+    const LIFF_ID = "PUT_YOUR_LIFF_ID_HERE";
     let currentUser = null;
     let selectedFiles = [];
     let cachedCriteriaForm = null;
@@ -152,7 +216,7 @@ window.onload = function() {
                             return;
                         }
 
-                        checkUserRole(userId);
+                        checkUserRole(userId, target);
                     } else {
                         liff.getProfile().then(p => {
                             const urlParams = new URLSearchParams(window.location.search);
@@ -160,7 +224,7 @@ window.onload = function() {
                                 window.location.replace(WEB_APP_URL + "?page=calendar&uid=" + p.userId);
                                 return;
                             }
-                            checkUserRole(p.userId);
+                            checkUserRole(p.userId, urlParams.get('target'));
                         });
                     }
                 }
@@ -171,7 +235,7 @@ window.onload = function() {
             });
     };
 
-    async function checkUserRole(lineId) {
+    async function checkUserRole(lineId, target) {
         try {
             const url = WEB_APP_URL + "?action=getVolunteerByLine&userId=" + lineId;
             const response = await fetch(url, { redirect: 'follow' });
@@ -187,11 +251,14 @@ window.onload = function() {
 
                 if (isStaff) {
                     if (vName) {
+                        // มาจาก flow บันทึกผลงาน (ค้นหาชื่อจากแชทบอทแล้วกดลิงก์มา)
                         document.getElementById('staffSection').style.display = 'block';
                         document.getElementById('volunteerName').value = vName;
                         loadCriteriaForm();
                     } else {
-                        Swal.fire('เข้าถึงไม่ถูกต้อง', 'กรุณาค้นหาชื่อกรรมการจากแชทบอทเพื่อบันทึกงานครับ', 'warning').then(() => liff.closeWindow());
+                        // 🆕 เปิดจากเมนู "ดูผลงาน" ตรงๆ (ไม่มี vName) -> เจ้าหน้าที่เห็นตารางสรุปทุกคน
+                        document.getElementById('staffScoreLookup').style.display = 'block';
+                        loadAllVolunteerScores();
                     }
                 } else {
                     document.getElementById('volunteerDashboard').style.display = 'block';
@@ -452,6 +519,127 @@ window.onload = function() {
             document.getElementById('submitBtn').disabled = false;
         }
     });
+
+    // ══════════════════════════════════════════════════
+    // 🆕 ดูคะแนนกรรมการ สำหรับเจ้าหน้าที่ (เปิดจากเมนู "ดูผลงาน" ตรงๆ ไม่มี vName)
+    // ══════════════════════════════════════════════════
+    let _staffScoresCache = null; // เก็บผลลัพธ์ไว้ใช้กรองค้นหาโดยไม่ต้องยิง Server ซ้ำ
+
+    /**
+     * โหลดคะแนนของกรรมการทุกคนพร้อมกัน แสดงเป็นตารางสรุป (เหมือนหน้าเว็บหลัก)
+     */
+    async function loadAllVolunteerScores() {
+        const tbody = document.getElementById('staffScoreTableBody');
+        tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted p-3">กำลังโหลด...</td></tr>';
+
+        try {
+            const res = await fetch(WEB_APP_URL + "?action=getAllScores");
+            const data = await res.json();
+
+            if (!data.success) {
+                tbody.innerHTML = '<tr><td colspan="3" class="text-center text-danger p-3">โหลดข้อมูลไม่สำเร็จ: ' + (data.message || '') + '</td></tr>';
+                return;
+            }
+
+            _staffScoresCache = data.scores || {};
+            renderStaffScoreTable(_staffScoresCache);
+        } catch (err) {
+            tbody.innerHTML = '<tr><td colspan="3" class="text-center text-danger p-3">เกิดข้อผิดพลาด: ' + err.message + '</td></tr>';
+        }
+    }
+
+    /**
+     * วาดตารางสรุปคะแนนทุกคน เรียงตามชื่อ — แต่ละแถวคลิกได้เพื่อดูรายละเอียด
+     */
+    function renderStaffScoreTable(scores) {
+        const tbody = document.getElementById('staffScoreTableBody');
+        const names = Object.keys(scores).sort();
+
+        if (names.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted p-3">ไม่พบข้อมูลกรรมการ</td></tr>';
+            return;
+        }
+
+        let html = '';
+        names.forEach(name => {
+            const d = scores[name];
+            html += '<tr style="cursor:pointer;" onclick="viewStaffScoreDetail(\'' + name.replace(/'/g, "\\'") + '\')">' +
+                '<td class="fw-bold text-primary">' + name + '</td>' +
+                '<td class="text-center text-success fw-bold">' + (d.yearly || 0).toFixed(2) + '</td>' +
+                '<td class="text-center"><span class="badge rounded-pill ' + (d.total >= 12 ? 'bg-success' : 'bg-light text-primary border border-primary') + ' px-2">' +
+                (d.total || 0).toFixed(2) + ' / 12</span></td></tr>';
+        });
+        tbody.innerHTML = html;
+    }
+
+    /**
+     * กรองตารางสรุปตามชื่อที่พิมพ์ค้นหา (กรองจาก cache ไม่ยิง Server ซ้ำ)
+     */
+    function filterStaffScoreTable() {
+        const keyword = document.getElementById('staffScoreSearchInput').value.trim().toLowerCase();
+        if (!_staffScoresCache) return;
+
+        if (!keyword) {
+            renderStaffScoreTable(_staffScoresCache);
+            return;
+        }
+
+        const filtered = {};
+        Object.keys(_staffScoresCache).forEach(name => {
+            if (name.toLowerCase().includes(keyword)) filtered[name] = _staffScoresCache[name];
+        });
+        renderStaffScoreTable(filtered);
+    }
+
+    /**
+     * คลิกแถวในตารางสรุป -> โหลดรายละเอียดของคนนั้น (reuse buildDashboardTable() ร่วมกับฝั่งกรรมการ)
+     */
+    async function viewStaffScoreDetail(name) {
+        document.getElementById('staffScoreTableView').style.display = 'none';
+        document.getElementById('staffScoreDetailView').style.display = 'block';
+        document.getElementById('staffScoreVolunteerName').innerText = name;
+
+        Swal.fire({ title: 'กำลังโหลดคะแนน...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+
+        const year = (new Date().getFullYear() + 543).toString();
+        try {
+            const res = await fetch(WEB_APP_URL + "?action=getSummary&name=" + encodeURIComponent(name) + "&year=" + year);
+            const data = await res.json();
+            Swal.close();
+
+            if (!data.success) {
+                Swal.fire('ไม่พบข้อมูล', data.message || 'ไม่พบคะแนนของกรรมการท่านนี้', 'warning');
+                return;
+            }
+
+            const kpi = data.kpiScore || 0;
+            document.getElementById('staffKpiScore').innerText = kpi + " / 12";
+            document.getElementById('staffScoreBar').style.width = Math.min((kpi / 12) * 100, 100) + "%";
+
+            let stars = '';
+            const starCount = Math.min(Math.floor(kpi / 2.4), 5);
+            for (let i = 0; i < 5; i++) {
+                stars += i < starCount
+                    ? '<i class="bi bi-star-fill mx-1"></i>'
+                    : '<i class="bi bi-star mx-1 opacity-25"></i>';
+            }
+            document.getElementById('staffStarRating').innerHTML = stars;
+
+            // 🆕 reuse buildDashboardTable() ตัวเดียวกับที่กรรมการเห็น ไม่ต้องเขียนซ้ำ
+            document.getElementById('staffSummaryTableBody').innerHTML = buildDashboardTable(data);
+        } catch (err) {
+            Swal.close();
+            Swal.fire('Error', 'ไม่สามารถโหลดคะแนนได้: ' + err.message, 'error');
+        }
+    }
+
+    /**
+     * ปุ่ม "กลับหน้าสรุป" จากหน้ารายละเอียดรายบุคคล
+     */
+    function backToStaffScoreTable() {
+        document.getElementById('staffScoreDetailView').style.display = 'none';
+        document.getElementById('staffScoreTableView').style.display = 'block';
+    }
 
     async function loadDashboardData(name) {
         const year = (new Date().getFullYear() + 543).toString();
