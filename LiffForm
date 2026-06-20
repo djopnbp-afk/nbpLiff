@@ -128,7 +128,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbypvSok4qFXKAxkXi7OsEZ46L7yW7FRaNu_jwA_eBRWUZph-ZDr7D6KeUCq7s3h0hTQxg/exec";
-    const LIFF_ID = "PUT_YOUR_LIFF_ID_HERE";
+    const LIFF_ID = "2010457084-sEn3E7kN";
     let currentUser = null;
     let selectedFiles = [];
     let cachedCriteriaForm = null;
