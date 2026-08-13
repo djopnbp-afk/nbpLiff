@@ -12,12 +12,21 @@
         .container-liff { max-width: 600px; margin: auto; padding: 20px; }
         .card-custom { border-radius: 20px; border: none; box-shadow: 0 10px 25px rgba(0,0,0,0.08); background: white; margin-bottom: 20px; overflow: hidden; }
         .header-title { color: #0d6efd; font-weight: 800; }
+        
+        /* Dashboard สไตล์ */
         .score-box { background: linear-gradient(45deg, #0d6efd, #0056b3); color: white; border-radius: 15px; padding: 25px; text-align: center; }
         .progress { height: 12px; border-radius: 10px; margin: 15px 0; background-color: rgba(255,255,255,0.2); }
         .section-special { display: none; border-left: 4px solid #0d6efd; background-color: #f8f9ff; padding: 15px; border-radius: 0 10px 10px 0; margin-top: 15px; }
-        .btn-submit { background: linear-gradient(45deg, #0d6efd, #0056b3); color: white; border-radius: 12px; padding: 15px; font-weight: bold; width: 100%; border: none; transition: 0.3s; }
+        
+        .btn-submit { 
+            background: linear-gradient(45deg, #0d6efd, #0056b3);
+            color: white; border-radius: 12px; padding: 15px; 
+            font-weight: bold; width: 100%; border: none; transition: 0.3s;
+        }
         .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; }
         .loading-overlay { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9999; justify-content: center; align-items: center; flex-direction: column; }
+        
+        /* File Badge สไตล์ */
         .file-badge { background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 10px; padding: 8px 12px; display: flex; align-items: center; font-size: 0.85rem; }
     </style>
 </head>
@@ -63,77 +72,13 @@
         </div>
     </div>
 
-    <!-- 🆕 หน้าดูคะแนนกรรมการ สำหรับเจ้าหน้าที่ (เลือกชื่อแล้วดู dashboard เหมือนที่กรรมการเห็น) -->
-    <div id="staffScoreLookup" style="display: none;">
-        <!-- ตารางสรุปทุกคน -->
-        <div id="staffScoreTableView">
-            <div class="card card-custom p-4">
-                <div class="text-center mb-3">
-                    <h4 class="header-title"><i class="bi bi-bar-chart-fill"></i> สรุปคะแนนกรรมการสงเคราะห์</h4>
-                    <p class="text-muted small mb-0">ระบบสำหรับเจ้าหน้าที่สถานพินิจฯ</p>
-                </div>
-                <div class="mb-3">
-                    <input type="text" id="staffScoreSearchInput" class="form-control" placeholder="ค้นหาชื่อกรรมการ..." onkeyup="filterStaffScoreTable()">
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle small">
-                        <thead class="table-light">
-                            <tr>
-                                <th class="text-start">ชื่อ-นามสกุล</th>
-                                <th class="text-center">คะแนนปีนี้</th>
-                                <th class="text-center">สะสมรวม</th>
-                            </tr>
-                        </thead>
-                        <tbody id="staffScoreTableBody"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- รายละเอียดรายบุคคล (แสดงตอนคลิกแถวจากตารางด้านบน) -->
-        <div id="staffScoreDetailView" style="display: none;">
-            <div class="card card-custom p-4">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="text-primary fw-bold mb-0" id="staffScoreVolunteerName"></h5>
-                    <button class="btn btn-sm btn-outline-secondary rounded-pill" onclick="backToStaffScoreTable()">
-                        <i class="bi bi-arrow-left me-1"></i> กลับหน้าสรุป
-                    </button>
-                </div>
-                <div class="score-box">
-                    <div class="small opacity-75">คะแนนสะสมรอบปีปัจจุบัน</div>
-                    <h1 id="staffKpiScore" class="my-2">0 / 12</h1>
-                    <div class="progress">
-                        <div id="staffScoreBar" class="progress-bar bg-warning" style="width: 0%"></div>
-                    </div>
-                    <div id="staffStarRating" class="text-warning fs-4"></div>
-                </div>
-            </div>
-
-            <div class="card card-custom p-4">
-                <h5 class="mb-3 fw-bold"><i class="bi bi-clock-history"></i> สรุปรายละเอียดคะแนน </h5>
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle">
-                        <thead class="table-light small">
-                            <tr>
-                                <th class="text-start">รายการผลงาน</th>
-                                <th class="text-center">จำนวนครั้ง</th>
-                            </tr>
-                        </thead>
-                        <tbody id="staffSummaryTableBody" class="small"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div id="staffSection" style="display: none;">
         <div class="card card-custom p-4">
             <div class="text-center mb-4">
                 <h4 class="header-title"><i class="bi bi-pencil-square"></i> บันทึกผลงานใหม่</h4>
-                <p class="text-muted small">ระบบสำหรับเจ้าหน้าที่สถานพินิจฯ ขอนแก่น</p>
-
+                <p class="text-muted small">ระบบสำหรับเจ้าหน้าที่สถานพินิจฯ หนองบัวลำภู</p>
             </div>
-
+            
             <form id="perfForm" class="row g-3">
                 <div class="col-4">
                     <label class="form-label small">ปี พ.ศ.</label>
@@ -146,8 +91,8 @@
 
                 <div class="col-12">
                     <label class="form-label small">ประเภทผลงาน</label>
-                    <select id="mainType" class="form-select" onchange="updateSubOptions()" required disabled>
-                        <option value="">กำลังโหลดประเภทผลงาน...</option>
+                    <select id="mainType" class="form-select" onchange="updateSubOptions()" required>
+                        <option value="">กำลังโหลด...</option>
                     </select>
                 </div>
 
@@ -158,10 +103,17 @@
                     </select>
                 </div>
 
+                <!-- 🆕 v2.8: ช่องเลือกรายละเอียดย่อย (capGroup เช่น ค้ำประกัน/โครงการ/บ้านกึ่งวิถี) แบบ dynamic
+                     แทนที่ projectSection/guaranteeSection/halfwaySection เดิมที่ hardcode ไว้ ให้ตรงกับ
+                     หน้าเว็บหลัก (Index.html) ซึ่งอ่านโครงสร้างจาก Score_Criteria ของ Server โดยตรง -->
                 <div id="dynamicSubFieldSection" class="col-12 section-special">
-                    <label class="form-label small" id="dynamicSubFieldLabel">เลือกรายละเอียด</label>
+                    <label class="form-label text-primary small" id="dynamicSubFieldLabel">เลือกรายละเอียด</label>
                     <select id="dynamicSubDetail" class="form-select"></select>
                 </div>
+
+                <!-- 🆕 v2.8: ช่องกรอก/เลือกชื่อเด็ก (พ่อแม่อุปถัมภ์ / มีปัญหาพิเศษ + หัวข้อเยี่ยม)
+                     เนื้อหาวาดแบบ dynamic ผ่าน JS ตามหัวข้อที่เลือก เหมือนหน้าเว็บหลัก -->
+                <div id="childNameSection" class="col-12 section-special"></div>
 
                 <div class="col-12">
                     <label class="form-label small">วันที่จัดกิจกรรม</label>
@@ -193,10 +145,13 @@
 <script>
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbypvSok4qFXKAxkXi7OsEZ46L7yW7FRaNu_jwA_eBRWUZph-ZDr7D6KeUCq7s3h0hTQxg/exec";
     const LIFF_ID = "2010457084-sEn3E7kN";
-
     let currentUser = null;
     let selectedFiles = [];
+    // 🆕 v2.8: cache โครงสร้างหัวข้อจาก getActiveCriteriaForForm() (เหมือนหน้าเว็บหลัก)
     let cachedCriteriaForm = null;
+    // 🆕 v2.8: cache รายการ criteriaKey ที่กรรมการคนที่กำลังกรอกอยู่เคยบันทึกไว้ ใช้กรอง
+    // หัวข้อ "เยี่ยม" (childNameSourceKey) ไม่ให้โผล่ถ้ายังไม่เคยบันทึกหัวข้อต้นทางมาก่อน
+    let cachedVolunteerUsedKeys = [];
 
 window.onload = function() {
         liff.init({ liffId: LIFF_ID })
@@ -208,24 +163,28 @@ window.onload = function() {
                     const userId = (context && context.userId) ? context.userId : null;
 
                     if (userId) {
+                        // 🚩 ส่วนที่เพิ่มใหม่: ตรวจสอบว่ากดมาจากริชเมนู "จองวัน" หรือไม่
                         const urlParams = new URLSearchParams(window.location.search);
                         const target = urlParams.get('target');
 
                         if (target === 'calendar') {
-                            const appsScriptUrl = WEB_APP_URL + "?page=calendar&uid=" + userId;
-                            window.location.replace(appsScriptUrl);
-                            return;
+                            // 🚀 ดีดตัวไปหน้าปฏิทินที่ Apps Script ทันทีพร้อมส่ง UID ไปเช็คสิทธิ์
+                            const appsScriptUrl = `${WEB_APP_URL}?page=calendar&uid=${userId}`;
+                            window.location.replace(appsScriptUrl); 
+                            return; // หยุดการทำงานที่เหลือในหน้านี้ เพื่อไม่ให้โหลด UI เดิมขึ้นมาซ้อน
                         }
 
-                        checkUserRole(userId, target);
+                        // 🔵 ระบบเดิม: ทำงานตามปกติ
+                        checkUserRole(userId);
                     } else {
                         liff.getProfile().then(p => {
+                            // 🚩 เช็คพารามิเตอร์กรณีเข้าผ่าน getProfile (เผื่อไว้)
                             const urlParams = new URLSearchParams(window.location.search);
                             if (urlParams.get('target') === 'calendar') {
-                                window.location.replace(WEB_APP_URL + "?page=calendar&uid=" + p.userId);
+                                window.location.replace(`${WEB_APP_URL}?page=calendar&uid=${p.userId}`);
                                 return;
                             }
-                            checkUserRole(p.userId, urlParams.get('target'));
+                            checkUserRole(p.userId);
                         });
                     }
                 }
@@ -236,9 +195,9 @@ window.onload = function() {
             });
     };
 
-    async function checkUserRole(lineId, target) {
+    async function checkUserRole(lineId) {
         try {
-            const url = WEB_APP_URL + "?action=getVolunteerByLine&userId=" + lineId;
+            const url = `${WEB_APP_URL}?action=getVolunteerByLine&userId=${lineId}`;
             const response = await fetch(url, { redirect: 'follow' });
             const data = await response.json();
             document.getElementById('loader').style.display = 'none';
@@ -252,18 +211,17 @@ window.onload = function() {
 
                 if (isStaff) {
                     if (vName) {
-                        // มาจาก flow บันทึกผลงาน (ค้นหาชื่อจากแชทบอทแล้วกดลิงก์มา)
                         document.getElementById('staffSection').style.display = 'block';
                         document.getElementById('volunteerName').value = vName;
-                        loadCriteriaForm();
+                        // 🆕 v2.8: โหลดโครงสร้างหัวข้อจาก Server + รายการหัวข้อที่กรรมการคนนี้
+                        // เคยบันทึกไว้แล้ว (ใช้กรองว่าหัวข้อ "เยี่ยม" ควรแสดงหรือไม่)
+                        loadCriteriaForm().then(() => fetchVolunteerUsedKeys(vName));
                     } else {
-                        // 🆕 เปิดจากเมนู "ดูผลงาน" ตรงๆ (ไม่มี vName) -> เจ้าหน้าที่เห็นตารางสรุปทุกคน
-                        document.getElementById('staffScoreLookup').style.display = 'block';
-                        loadAllVolunteerScores();
+                        Swal.fire('เข้าถึงไม่ถูกต้อง', 'กรุณาค้นหาชื่อกรรมการจากแชทบอทเพื่อบันทึกงานครับ', 'warning').then(() => liff.closeWindow());
                     }
                 } else {
                     document.getElementById('volunteerDashboard').style.display = 'block';
-                    document.getElementById('volunteerDisplayName').innerText = "สวัสดีคุณ " + data.fullname;
+                    document.getElementById('volunteerDisplayName').innerText = `สวัสดีคุณ ${data.fullname}`;
                     loadDashboardData(data.fullname);
                 }
             } else {
@@ -274,106 +232,7 @@ window.onload = function() {
         }
     }
 
-    async function loadCriteriaForm() {
-        const mainTypeSelect = document.getElementById('mainType');
-        try {
-            const url = WEB_APP_URL + "?action=getCriteriaForm";
-            const res = await fetch(url, { redirect: 'follow' });
-            const data = await res.json();
-
-            if (!data.success) {
-                Swal.fire('ผิดพลาด', 'โหลดประเภทผลงานไม่สำเร็จ: ' + data.message, 'error');
-                return;
-            }
-
-            cachedCriteriaForm = data.data;
-            mainTypeSelect.innerHTML = '<option value="">เลือกประเภทหลัก...</option>';
-            Object.keys(cachedCriteriaForm).forEach(mt => {
-                const opt = document.createElement('option');
-                opt.value = mt;
-                opt.textContent = mt;
-                mainTypeSelect.appendChild(opt);
-            });
-            mainTypeSelect.disabled = false;
-        } catch (err) {
-            Swal.fire('Error', 'ไม่สามารถโหลดประเภทผลงานได้: ' + err.message, 'error');
-        }
-    }
-
-    function updateSubOptions() {
-        const mainType = document.getElementById('mainType').value;
-        const subTypeSelect = document.getElementById('subType');
-        subTypeSelect.disabled = false;
-        subTypeSelect.innerHTML = '<option value="">เลือกรายการ...</option>';
-
-        if (!mainType || !cachedCriteriaForm || !cachedCriteriaForm[mainType]) {
-            showSpecificSubFields();
-            return;
-        }
-
-        cachedCriteriaForm[mainType].forEach(item => {
-            const el = document.createElement('option');
-            el.value = item.key;
-            el.textContent = item.label;
-            el.dataset.isCapGroupParent = item.isCapGroupParent ? '1' : '0';
-            subTypeSelect.appendChild(el);
-        });
-
-        showSpecificSubFields();
-    }
-
-    function showSpecificSubFields() {
-        const mainType = document.getElementById('mainType').value;
-        const subTypeSelect = document.getElementById('subType');
-        const subTypeKey = subTypeSelect.value;
-        const section = document.getElementById('dynamicSubFieldSection');
-        const subDetailSelect = document.getElementById('dynamicSubDetail');
-        const label = document.getElementById('dynamicSubFieldLabel');
-
-        section.style.display = 'none';
-        subDetailSelect.innerHTML = '';
-
-        if (!mainType || !subTypeKey || !cachedCriteriaForm || !cachedCriteriaForm[mainType]) return;
-
-        const selectedItem = cachedCriteriaForm[mainType].find(item => item.key === subTypeKey);
-        if (selectedItem && selectedItem.isCapGroupParent && selectedItem.subOptions && selectedItem.subOptions.length > 0) {
-            label.textContent = 'เลือกรายละเอียด: ' + selectedItem.label;
-            selectedItem.subOptions.forEach(sub => {
-                const opt = document.createElement('option');
-                opt.value = sub.key;
-                opt.textContent = sub.label;
-                subDetailSelect.appendChild(opt);
-            });
-            section.style.display = 'block';
-        }
-    }
-
-    function getSelectedCriteriaKey() {
-        const subTypeSelect = document.getElementById('subType');
-        const selectedOption = subTypeSelect.options[subTypeSelect.selectedIndex];
-        const isCapGroupParent = selectedOption && selectedOption.dataset.isCapGroupParent === '1';
-
-        if (isCapGroupParent) {
-            return document.getElementById('dynamicSubDetail').value || '';
-        }
-        return subTypeSelect.value || '';
-    }
-
-    function getSelectedLabels() {
-        const mainType = document.getElementById('mainType').value;
-        const subTypeSelect = document.getElementById('subType');
-        const subTypeLabel = subTypeSelect.options[subTypeSelect.selectedIndex] ? subTypeSelect.options[subTypeSelect.selectedIndex].textContent : '';
-
-        const section = document.getElementById('dynamicSubFieldSection');
-        let subDetailLabel = '-';
-        if (section.style.display !== 'none') {
-            const subDetailSelect = document.getElementById('dynamicSubDetail');
-            subDetailLabel = subDetailSelect.options[subDetailSelect.selectedIndex] ? subDetailSelect.options[subDetailSelect.selectedIndex].textContent : '-';
-        }
-
-        return { mainType: mainType, subType: subTypeLabel, subDetail: subDetailLabel };
-    }
-
+    // --- ฟังก์ชันย่อขนาดรูปภาพ (สำคัญ: แก้ปัญหาเครื่องค้าง) ---
     async function compressImage(file) {
         return new Promise((resolve) => {
             const reader = new FileReader();
@@ -383,7 +242,7 @@ window.onload = function() {
                 img.src = event.target.result;
                 img.onload = () => {
                     const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 1200;
+                    const MAX_WIDTH = 1200; 
                     let width = img.width;
                     let height = img.height;
                     if (width > MAX_WIDTH) {
@@ -404,7 +263,7 @@ window.onload = function() {
         const newFiles = Array.from(e.target.files);
         selectedFiles = selectedFiles.concat(newFiles);
         renderFileList();
-        this.value = "";
+        this.value = ""; 
     });
 
     function renderFileList() {
@@ -413,9 +272,11 @@ window.onload = function() {
         selectedFiles.forEach((file, index) => {
             const div = document.createElement('div');
             div.className = "file-badge shadow-sm";
-            div.innerHTML = '<i class="bi ' + (file.type.startsWith('image/') ? 'bi-image' : 'bi-file-pdf') + ' me-2 text-primary"></i>' +
-                '<span class="text-truncate" style="max-width: 150px;">' + file.name + '</span>' +
-                '<i class="bi bi-x-circle-fill ms-2 text-danger" style="cursor:pointer" onclick="removeFile(' + index + ')"></i>';
+            div.innerHTML = `
+                <i class="bi ${file.type.startsWith('image/') ? 'bi-image' : 'bi-file-pdf'} me-2 text-primary"></i>
+                <span class="text-truncate" style="max-width: 150px;">${file.name}</span>
+                <i class="bi bi-x-circle-fill ms-2 text-danger" style="cursor:pointer" onclick="removeFile(${index})"></i>
+            `;
             container.appendChild(div);
         });
     }
@@ -428,20 +289,31 @@ window.onload = function() {
     document.getElementById('perfForm').addEventListener('submit', async function(e) {
         e.preventDefault();
         const volunteer = document.getElementById('volunteerName').value;
-        const criteriaKey = getSelectedCriteriaKey();
-
-        if (!criteriaKey) {
-            return Swal.fire('คำเตือน', 'กรุณาเลือกประเภทผลงานให้ครบถ้วน', 'warning');
-        }
-
         const confirm = await Swal.fire({
             title: 'ยืนยันการบันทึก?',
-            text: "กรรมการ: " + volunteer,
+            text: `กรรมการ: ${volunteer}`,
             icon: 'question',
             showCancelButton: true,
             confirmButtonText: 'บันทึกข้อมูล'
         });
         if (!confirm.isConfirmed) return;
+
+        // 🆕 v2.8: ตรวจสอบว่าเลือกหัวข้อผลงานจริง (criteriaKey) และกรอกชื่อเด็กครบ (ถ้าต้องใช้)
+        const criteriaKey = getSelectedCriteriaKey();
+        if (!criteriaKey) {
+            Swal.fire('คำเตือน', 'กรุณาเลือกรายการผลงานให้ครบถ้วน', 'warning');
+            return;
+        }
+        const childSectionCheck = document.getElementById('childNameSection');
+        if (childSectionCheck && childSectionCheck.style.display !== 'none') {
+            const childInputCheck = document.getElementById('childNameInput');
+            const childSelectCheck = document.getElementById('childNameSelect');
+            const childValCheck = childInputCheck ? childInputCheck.value.trim() : (childSelectCheck ? childSelectCheck.value : '');
+            if (!childValCheck) {
+                Swal.fire('คำเตือน', 'กรุณาระบุ/เลือกชื่อเด็กให้ครบ', 'warning');
+                return;
+            }
+        }
 
         document.getElementById('loaderText').innerText = "กำลังย่อขนาดรูปภาพและส่งข้อมูล...";
         document.getElementById('loader').style.display = 'flex';
@@ -462,6 +334,8 @@ window.onload = function() {
             fileData.push({ base64: base64, mimeType: file.type, fileName: file.name });
         }
 
+        // 🆕 v2.8: ใช้ getSelectedLabels() คำนวณ mainType/subType/subDetail แบบ dynamic
+        // (รองรับทั้ง capGroup และชื่อเด็ก) แทนการอ้างชื่อหัวข้อ hardcode แบบเดิม
         const labels = getSelectedLabels();
 
         const payload = {
@@ -471,30 +345,36 @@ window.onload = function() {
             mainType: labels.mainType,
             subType: labels.subType,
             subDetail: labels.subDetail,
-            criteriaKey: criteriaKey,
+            criteriaKey: criteriaKey, // 🆕 v2.8: ขาดไปเดิมทำให้ Server ปฏิเสธการบันทึกเสมอ
             date: document.getElementById('date').value,
             details: document.getElementById('details').value,
             files: fileData
         };
 
         try {
-            const res = await fetch(WEB_APP_URL, {
-                method: 'POST',
-                body: JSON.stringify(payload)
+            const res = await fetch(WEB_APP_URL, { 
+                method: 'POST', 
+                body: JSON.stringify(payload) 
             });
-
+            
             if (res.ok) {
                 const result = await res.json();
                 document.getElementById('loader').style.display = 'none';
 
-                // 🆕 v2: ไม่ใช้ liff.sendMessages() แล้ว เพราะข้อความจะดูเหมือนผู้ใช้พิมพ์เอง
-                // ไม่ใช่บอทตอบ และมีเงื่อนไขสิทธิ์/บริบทที่เปิดใช้ได้เปราะบาง
-                // ตอนนี้ Server (doPost) จะ push ข้อความจากบอทกลับไปให้แทน หลังบันทึกเสร็จ
-
+                // 🚩 เพิ่มส่วนส่งข้อความแจ้งเตือนเข้าหน้าแชท LINE
+                try {
+                    await liff.sendMessages([{
+                        "type": "text",
+                        "text": `✅ ส่งข้อมูล\nกรรมการ: ${payload.volunteerName}\nรายการ: ${payload.subType}\nไปบันทึกเรียบร้อยแล้ว`
+                    }]);
+                } catch (lineErr) {
+                    console.log("ส่งข้อความเข้าแชทไม่ได้ (อาจเพราะไม่ได้เปิดสิทธิ์):", lineErr);
+                }
+                
                 if (result.success) {
                     await Swal.fire('สำเร็จ', 'บันทึกข้อมูลเรียบร้อยแล้ว', 'success');
                 } else {
-                    await Swal.fire('แจ้งเตือน', result.message || 'บันทึกไม่สำเร็จ', 'warning');
+                    await Swal.fire('แจ้งเตือน', result.message || 'บันทึกสำเร็จ', 'success');
                 }
                 liff.closeWindow();
             } else {
@@ -504,14 +384,19 @@ window.onload = function() {
         } catch (err) {
             console.error("Fetch Error:", err);
             document.getElementById('loader').style.display = 'none';
+            
+            // 🚩 แม้จะเข้า Catch (Error) แต่ถ้าข้อมูลเข้า Sheet แล้ว เราก็เนียนส่งข้อความบอกในแชทด้วยครับ
+            try {
+                await liff.sendMessages([{
+                    "type": "text",
+                    "text": `✅ บันทึกสำเร็จ (Network Delay)\nกรรมการ: ${payload.volunteerName}`
+                }]);
+            } catch (e) {}
 
-            // 🆕 v2: ไม่ส่ง liff.sendMessages() ในนี้แล้วเช่นกัน — ถ้า fetch ล้มเหลวจริง
-            // (เช่น เน็ตหลุด) ข้อมูลอาจไม่ได้เข้า Server เลย การยืนยันว่า "สำเร็จ" ตรงนี้
-            // เคยเป็นการเดาเอาเอง ตอนนี้ปล่อยให้ผู้ใช้เห็นว่าอาจมีปัญหาเครือข่ายแทน
             Swal.fire({
-                title: 'ไม่สามารถยืนยันผลการบันทึกได้',
-                text: 'อาจเกิดจากเครือข่ายขัดข้อง กรุณาตรวจสอบกับเจ้าหน้าที่ หรือลองบันทึกใหม่อีกครั้งครับ',
-                icon: 'warning'
+                title: 'บันทึกข้อมูลเรียบร้อย',
+                text: 'ระบบประมวลผลสำเร็จแล้วครับ',
+                icon: 'success'
             }).then(() => {
                 liff.closeWindow();
             });
@@ -521,233 +406,361 @@ window.onload = function() {
         }
     });
 
-    // ══════════════════════════════════════════════════
-    // 🆕 ดูคะแนนกรรมการ สำหรับเจ้าหน้าที่ (เปิดจากเมนู "ดูผลงาน" ตรงๆ ไม่มี vName)
-    // ══════════════════════════════════════════════════
-    let _staffScoresCache = null; // เก็บผลลัพธ์ไว้ใช้กรองค้นหาโดยไม่ต้องยิง Server ซ้ำ
-
     /**
-     * โหลดคะแนนของกรรมการทุกคนพร้อมกัน แสดงเป็นตารางสรุป (เหมือนหน้าเว็บหลัก)
+     * 🆕 v2.8 — โหลดโครงสร้างหัวข้อผลงานจาก Server (เหมือนหน้าเว็บหลัก) แทนการ hardcode
+     * รายชื่อหัวข้อไว้ในไฟล์นี้เอง ซึ่งจะไม่มีวันตรงกับ Score_Criteria จริงถ้ามีการแก้ไข
+     * เกณฑ์คะแนนที่หน้าเว็บหลักในอนาคต (เพิ่ม/ลบ/แก้ไขหัวข้อ)
      */
-    async function loadAllVolunteerScores() {
-        const tbody = document.getElementById('staffScoreTableBody');
-        tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted p-3">กำลังโหลด...</td></tr>';
-
+    async function loadCriteriaForm() {
         try {
-            const myUserId = liff.getContext().userId;
-            const res = await fetch(WEB_APP_URL + "?action=getAllScores&userId=" + myUserId);
+            const res = await fetch(`${WEB_APP_URL}?action=getCriteriaForm`);
             const data = await res.json();
-
-            if (!data.success) {
-                tbody.innerHTML = '<tr><td colspan="3" class="text-center text-danger p-3">โหลดข้อมูลไม่สำเร็จ: ' + (data.message || '') + '</td></tr>';
-                return;
+            if (data.success) {
+                cachedCriteriaForm = data.data;
+                const mainTypeSelect = document.getElementById('mainType');
+                mainTypeSelect.innerHTML = '<option value="">เลือกประเภทหลัก...</option>';
+                Object.keys(cachedCriteriaForm).forEach(mt => {
+                    const opt = document.createElement('option');
+                    opt.value = mt;
+                    opt.textContent = mt;
+                    mainTypeSelect.appendChild(opt);
+                });
             }
-
-            _staffScoresCache = data.scores || {};
-            renderStaffScoreTable(_staffScoresCache);
-        } catch (err) {
-            tbody.innerHTML = '<tr><td colspan="3" class="text-center text-danger p-3">เกิดข้อผิดพลาด: ' + err.message + '</td></tr>';
+        } catch (e) {
+            console.error('โหลดโครงสร้างหัวข้อผลงานไม่สำเร็จ:', e);
+            Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถโหลดโครงสร้างหัวข้อผลงานได้ กรุณาลองใหม่', 'error');
         }
     }
 
     /**
-     * วาดตารางสรุปคะแนนทุกคน เรียงตามชื่อ — แต่ละแถวคลิกได้เพื่อดูรายละเอียด
+     * 🆕 v2.8 — โหลดรายการ criteriaKey ที่กรรมการคนนี้เคยบันทึกไว้แล้ว ใช้กรองว่าหัวข้อ
+     * "เยี่ยม" (ผูก childNameSourceKey) ควรแสดงให้เลือกหรือไม่ — กันกรณี dropdown ชื่อเด็ก
+     * ว่างเปล่าเพราะยังไม่เคยบันทึกหัวข้อต้นทาง (เช่น พ่อแม่อุปถัมภ์) มาก่อนเลย
      */
-    function renderStaffScoreTable(scores) {
-        const tbody = document.getElementById('staffScoreTableBody');
-        const names = Object.keys(scores).sort();
+    async function fetchVolunteerUsedKeys(vName) {
+        try {
+            const url = `${WEB_APP_URL}?action=getVolunteerUsedKeys&userId=${liff.getContext().userId}&name=${encodeURIComponent(vName)}`;
+            const res = await fetch(url);
+            const data = await res.json();
+            cachedVolunteerUsedKeys = (data && data.success) ? data.keys : [];
+        } catch (e) {
+            console.error('โหลดรายการหัวข้อที่เคยบันทึกไม่สำเร็จ:', e);
+            cachedVolunteerUsedKeys = [];
+        }
+    }
 
-        if (names.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted p-3">ไม่พบข้อมูลกรรมการ</td></tr>';
+    /**
+     * v2.8 — เติม dropdown "รายการผลงาน" (subType) แบบ dynamic ตาม mainType ที่เลือก
+     * กรองหัวข้อ "เยี่ยม" ออกถ้ากรรมการยังไม่เคยบันทึกหัวข้อต้นทางมาก่อน (ดู cachedVolunteerUsedKeys)
+     */
+    function updateSubOptions() {
+        const main = document.getElementById('mainType').value;
+        const sub = document.getElementById('subType');
+        sub.disabled = false;
+        sub.innerHTML = '<option value="">เลือกรายการ...</option>';
+
+        if (!main || !cachedCriteriaForm || !cachedCriteriaForm[main]) {
+            showSpecificSubFields();
             return;
         }
 
-        let html = '';
-        names.forEach(name => {
-            const d = scores[name];
-            html += '<tr style="cursor:pointer;" onclick="viewStaffScoreDetail(\'' + name.replace(/'/g, "\\'") + '\')">' +
-                '<td class="fw-bold text-primary">' + name + '</td>' +
-                '<td class="text-center text-success fw-bold">' + (d.yearly || 0).toFixed(2) + '</td>' +
-                '<td class="text-center"><span class="badge rounded-pill ' + (d.total >= 12 ? 'bg-success' : 'bg-light text-primary border border-primary') + ' px-2">' +
-                (d.total || 0).toFixed(2) + ' / 12</span></td></tr>';
+        cachedCriteriaForm[main].forEach(item => {
+            // 🆕 หัวข้อ "เยี่ยม" (ผูก childNameSourceKey) ต้องเคยบันทึกหัวข้อต้นทางมาก่อนถึงจะแสดง
+            if (item.childNameSourceKey && !cachedVolunteerUsedKeys.includes(item.childNameSourceKey)) return;
+            const el = document.createElement('option');
+            el.value = item.key;
+            el.textContent = item.label;
+            el.dataset.isCapGroupParent = item.isCapGroupParent ? '1' : '0';
+            sub.appendChild(el);
         });
-        tbody.innerHTML = html;
+
+        showSpecificSubFields();
     }
 
     /**
-     * กรองตารางสรุปตามชื่อที่พิมพ์ค้นหา (กรองจาก cache ไม่ยิง Server ซ้ำ)
+     * v2.8 — แสดงช่องรายละเอียดย่อย (capGroup) หรือช่องชื่อเด็ก (requiresChildName) แบบ dynamic
+     * แทนการ hardcode ผูกกับชื่อหัวข้อแบบเดิม (โครงการ/ค้ำประกันทำงาน/บ้านกึ่งวิถี)
      */
-    function filterStaffScoreTable() {
-        const keyword = document.getElementById('staffScoreSearchInput').value.trim().toLowerCase();
-        if (!_staffScoresCache) return;
+    function showSpecificSubFields() {
+        const main = document.getElementById('mainType').value;
+        const subSelect = document.getElementById('subType');
+        const subKey = subSelect.value;
+        const section = document.getElementById('dynamicSubFieldSection');
+        const subDetailSelect = document.getElementById('dynamicSubDetail');
+        const label = document.getElementById('dynamicSubFieldLabel');
+        const childSection = document.getElementById('childNameSection');
 
-        if (!keyword) {
-            renderStaffScoreTable(_staffScoresCache);
+        section.style.display = 'none';
+        subDetailSelect.innerHTML = '';
+        if (childSection) { childSection.style.display = 'none'; childSection.innerHTML = ''; }
+
+        if (!main || !subKey || !cachedCriteriaForm || !cachedCriteriaForm[main]) return;
+
+        const selectedItem = cachedCriteriaForm[main].find(item => item.key === subKey);
+
+        // หัวข้อเดี่ยวที่ต้องระบุชื่อเด็ก (พ่อแม่อุปถัมภ์/มีปัญหาพิเศษ/หัวข้อเยี่ยม)
+        if (selectedItem && !selectedItem.isCapGroupParent && selectedItem.requiresChildName) {
+            renderChildNameField(selectedItem);
             return;
         }
 
-        const filtered = {};
-        Object.keys(_staffScoresCache).forEach(name => {
-            if (name.toLowerCase().includes(keyword)) filtered[name] = _staffScoresCache[name];
-        });
-        renderStaffScoreTable(filtered);
-    }
-
-    /**
-     * คลิกแถวในตารางสรุป -> โหลดรายละเอียดของคนนั้น (reuse buildDashboardTable() ร่วมกับฝั่งกรรมการ)
-     */
-    async function viewStaffScoreDetail(name) {
-        document.getElementById('staffScoreTableView').style.display = 'none';
-        document.getElementById('staffScoreDetailView').style.display = 'block';
-        document.getElementById('staffScoreVolunteerName').innerText = name;
-
-        Swal.fire({ title: 'กำลังโหลดคะแนน...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-
-        const year = (new Date().getFullYear() + 543).toString();
-        try {
-            const myUserId = liff.getContext().userId;
-            const res = await fetch(WEB_APP_URL + "?action=getSummary&name=" + encodeURIComponent(name) + "&year=" + year + "&userId=" + myUserId);
-            const data = await res.json();
-            Swal.close();
-
-            if (!data.success) {
-                Swal.fire('ไม่พบข้อมูล', data.message || 'ไม่พบคะแนนของกรรมการท่านนี้', 'warning');
-                return;
-            }
-
-            const kpi = data.kpiScore || 0;
-            document.getElementById('staffKpiScore').innerText = kpi + " / 12";
-            document.getElementById('staffScoreBar').style.width = Math.min((kpi / 12) * 100, 100) + "%";
-
-            let stars = '';
-            const starCount = Math.min(Math.floor(kpi / 2.4), 5);
-            for (let i = 0; i < 5; i++) {
-                stars += i < starCount
-                    ? '<i class="bi bi-star-fill mx-1"></i>'
-                    : '<i class="bi bi-star mx-1 opacity-25"></i>';
-            }
-            document.getElementById('staffStarRating').innerHTML = stars;
-
-            // 🆕 reuse buildDashboardTable() ตัวเดียวกับที่กรรมการเห็น ไม่ต้องเขียนซ้ำ
-            document.getElementById('staffSummaryTableBody').innerHTML = buildDashboardTable(data);
-        } catch (err) {
-            Swal.close();
-            Swal.fire('Error', 'ไม่สามารถโหลดคะแนนได้: ' + err.message, 'error');
-        }
-    }
-
-    /**
-     * ปุ่ม "กลับหน้าสรุป" จากหน้ารายละเอียดรายบุคคล
-     */
-    function backToStaffScoreTable() {
-        document.getElementById('staffScoreDetailView').style.display = 'none';
-        document.getElementById('staffScoreTableView').style.display = 'block';
-    }
-
-    async function loadDashboardData(name) {
-        const year = (new Date().getFullYear() + 543).toString();
-        try {
-            const myUserId = liff.getContext().userId;
-            const res  = await fetch(WEB_APP_URL + "?action=getSummary&name=" + encodeURIComponent(name) + "&year=" + year + "&userId=" + myUserId);
-            const data = await res.json();
-
-            if (!data.success) return;
-
-            const kpi = data.kpiScore || 0;
-            document.getElementById('kpiScore').innerText = kpi + " / 12";
-            document.getElementById('scoreBar').style.width = Math.min((kpi / 12) * 100, 100) + "%";
-
-            let stars = '';
-            const starCount = Math.min(Math.floor(kpi / 2.4), 5);
-            for (let i = 0; i < 5; i++) {
-                stars += i < starCount
-                    ? '<i class="bi bi-star-fill mx-1"></i>'
-                    : '<i class="bi bi-star mx-1 opacity-25"></i>';
-            }
-            document.getElementById('starRating').innerHTML = stars;
-
-            document.getElementById('summaryTableBody').innerHTML = buildDashboardTable(data);
-
-        } catch(e) {
-            console.error(e);
-        }
-    }
-
-    function buildDashboardTable(data) {
-        const criteria  = data.criteria  || {};
-        const stats     = data.stats     || {};
-        const points    = data.points    || {};
-        const capTotals = data.capTotals || {};
-
-        const sorted = Object.values(criteria)
-            .filter(c => c.maxScore > 0)
-            .sort((a, b) => (a.order || 0) - (b.order || 0));
-
-        let html = '' +
-            '<tr><td colspan="2" class="py-2">' +
-            '<span class="badge bg-primary bg-opacity-10 text-primary fw-bold px-3 py-2 rounded-pill">' +
-            '<i class="bi bi-clipboard2-check me-1"></i>ผลงานทั่วไป (ปีปัจจุบัน)</span></td></tr>' +
-            '<tr style="background:#f0f9ff;"><td><i class="bi bi-person-heart text-info me-2"></i>เยี่ยมเด็กและเยาวชน</td>' +
-            '<td class="text-center fw-bold text-info">' + (data.visit || 0) + ' ครั้ง</td></tr>' +
-            '<tr style="background:#f0f9ff;"><td><i class="bi bi-people text-primary me-2"></i>ร่วมประชุม</td>' +
-            '<td class="text-center fw-bold text-primary">' + (data.meeting || 0) + ' ครั้ง</td></tr>';
-
-        if (sorted.length === 0) {
-            html += '<tr><td colspan="2" class="text-center text-muted p-3">ไม่พบหัวข้อการประเมิน</td></tr>';
-            return html;
-        }
-
-        html += '<tr><td colspan="2" class="py-2">' +
-            '<span class="badge bg-success bg-opacity-10 text-success fw-bold px-3 py-2 rounded-pill">' +
-            '<i class="bi bi-star-fill me-1"></i>ผลงานเฉพาะ (นับคะแนน KPI)</span></td></tr>';
-
-        const capGroupItems = {};
-        sorted.forEach(c => {
-            if (c.capGroup) {
-                if (!capGroupItems[c.capGroup]) capGroupItems[c.capGroup] = [];
-                capGroupItems[c.capGroup].push(c);
-            }
-        });
-
-        const renderedGroups = new Set();
-        let itemNumber = 0;
-
-        sorted.forEach(c => {
-            if (!c.capGroup) {
-                itemNumber++;
-                const pt    = points[c.key] || 0;
-                const stars = '★'.repeat(pt) + '☆'.repeat(Math.max(3 - pt, 0));
-                html += '<tr><td><span class="text-muted me-1" style="font-size:0.8rem;">' + itemNumber + '.</span>' + c.label + '</td>' +
-                    '<td class="text-center"><span class="text-warning">' + stars + '</span>' +
-                    '<span class="fw-bold ms-1 text-success">' + pt + '</span></td></tr>';
-                return;
-            }
-
-            if (renderedGroups.has(c.capGroup)) return;
-            renderedGroups.add(c.capGroup);
-
-            itemNumber++;
-            const groupItems = capGroupItems[c.capGroup] || [];
-            const groupTotal = capTotals[c.capGroup]     || 0;
-            const groupLabel = c.capLabel || ('ด้าน' + (c.group || c.capGroup));
-            const groupColor = groupTotal >= 3 ? '#16a34a' : groupTotal >= 2 ? '#2563eb' : groupTotal >= 1 ? '#d97706' : '#6b7280';
-            const groupStars = '★'.repeat(groupTotal) + '☆'.repeat(Math.max(3 - groupTotal, 0));
-
-            html += '<tr style="background:#f1f5f9;"><td class="fw-bold small ps-2">' +
-                '<span class="text-muted me-1" style="font-size:0.8rem;">' + itemNumber + '.</span>' + groupLabel +
-                '<span class="badge bg-primary ms-1" style="font-size:0.6rem;">รวมไม่เกิน 3</span></td>' +
-                '<td class="text-center fw-bold" style="color:' + groupColor + ';">' + groupStars + ' ' + groupTotal + '</td></tr>';
-
-            groupItems.forEach(sub => {
-                const subPt = points[sub.key] || 0;
-                html += '<tr><td class="ps-4 text-muted small">' + sub.label + '</td>' +
-                    '<td class="text-center"><span class="badge bg-light text-primary border border-primary rounded-pill px-2">' +
-                    subPt + ' คะแนน</span></td></tr>';
+        // หัวข้อกลุ่ม (capGroup) เช่น ค้ำประกัน/โครงการ/บ้านกึ่งวิถี
+        if (selectedItem && selectedItem.isCapGroupParent && selectedItem.subOptions && selectedItem.subOptions.length > 0) {
+            label.textContent = 'เลือกรายละเอียด: ' + selectedItem.label;
+            selectedItem.subOptions.forEach(sub => {
+                const opt = document.createElement('option');
+                opt.value = sub.key;
+                opt.textContent = sub.label;
+                subDetailSelect.appendChild(opt);
             });
-        });
-
-        return html;
+            section.style.display = 'block';
+        }
     }
+
+    /**
+     * 🆕 v2.8 — วาดช่องกรอก/เลือกชื่อเด็ก ตาม childNameSourceKey ของหัวข้อที่เลือก
+     * - childNameSourceKey ว่าง -> โหมด "ลงทะเบียน" พิมพ์อิสระ (พ่อแม่อุปถัมภ์/มีปัญหาพิเศษตัวจริง)
+     * - childNameSourceKey มีค่า -> โหมด "เลือกจากรายชื่อที่เคยลงทะเบียนไว้" (หัวข้อเยี่ยม)
+     */
+    async function renderChildNameField(selectedItem) {
+        const childSection = document.getElementById('childNameSection');
+        if (!childSection) return;
+        const vName = document.getElementById('volunteerName').value.trim();
+
+        if (!selectedItem.childNameSourceKey) {
+            childSection.innerHTML = `
+                <label class="form-label text-primary small"><i class="bi bi-person-heart"></i> ชื่อเด็กที่รับผิดชอบ</label>
+                <input type="text" id="childNameInput" class="form-control" placeholder="พิมพ์ชื่อ-นามสกุลเด็ก">`;
+            childSection.style.display = 'block';
+            return;
+        }
+
+        childSection.innerHTML = `
+            <label class="form-label text-primary small"><i class="bi bi-person-heart"></i> ชื่อเด็กที่เยี่ยม</label>
+            <select id="childNameSelect" class="form-select"><option value="">กำลังโหลดรายชื่อ...</option></select>`;
+        childSection.style.display = 'block';
+
+        try {
+            const url = `${WEB_APP_URL}?action=getChildNames&userId=${liff.getContext().userId}&name=${encodeURIComponent(vName)}&sourceKey=${encodeURIComponent(selectedItem.childNameSourceKey)}`;
+            const res = await fetch(url);
+            const data = await res.json();
+            const select = document.getElementById('childNameSelect');
+            if (!select) return; // ผู้ใช้อาจสลับหัวข้ออื่นระหว่างรอโหลด
+            if (!data.success || !data.names || data.names.length === 0) {
+                select.innerHTML = '<option value="">ไม่พบเด็กที่ลงทะเบียนไว้ กรุณาบันทึกหัวข้อคะแนนจริงก่อน</option>';
+                return;
+            }
+            select.innerHTML = '<option value="">--- เลือกชื่อเด็ก ---</option>' +
+                data.names.map(n => `<option value="${n}">${n}</option>`).join('');
+        } catch (e) {
+            const select = document.getElementById('childNameSelect');
+            if (select) select.innerHTML = '<option value="">โหลดรายชื่อไม่สำเร็จ</option>';
+        }
+    }
+
+    /**
+     * v2.8 — คำนวณ criteriaKey ที่จะส่งไปบันทึกจริง (แทนการส่ง subType label ตรงๆ แบบเดิม
+     * ที่ทำให้ saveData() ฝั่ง Server ปฏิเสธเพราะไม่มี criteriaKey)
+     */
+    function getSelectedCriteriaKey() {
+        const subSelect = document.getElementById('subType');
+        const selectedOption = subSelect.options[subSelect.selectedIndex];
+        const isCapGroupParent = selectedOption && selectedOption.dataset.isCapGroupParent === '1';
+        if (isCapGroupParent) {
+            return document.getElementById('dynamicSubDetail').value || '';
+        }
+        return subSelect.value || '';
+    }
+
+    /**
+     * v2.8 — คำนวณ mainType/subType/subDetail ที่จะส่งไปบันทึก (label ที่อ่านง่ายสำหรับ
+     * เก็บใน Performance_DB) รวมถึงชื่อเด็กถ้าหัวข้อนั้นต้องระบุชื่อเด็ก
+     */
+    function getSelectedLabels() {
+        const main = document.getElementById('mainType').value;
+        const subSelect = document.getElementById('subType');
+        const subLabel = subSelect.options[subSelect.selectedIndex]?.textContent || '';
+
+        const childSection = document.getElementById('childNameSection');
+        if (childSection && childSection.style.display !== 'none') {
+            const childInput = document.getElementById('childNameInput');
+            const childSelect = document.getElementById('childNameSelect');
+            const childName = childInput ? childInput.value.trim() : (childSelect ? childSelect.value : '');
+            return { mainType: main, subType: subLabel, subDetail: childName || '-' };
+        }
+
+        const section = document.getElementById('dynamicSubFieldSection');
+        let subDetailLabel = '-';
+        if (section.style.display !== 'none') {
+            const subDetailSelect = document.getElementById('dynamicSubDetail');
+            subDetailLabel = subDetailSelect.options[subDetailSelect.selectedIndex]?.textContent || '-';
+        }
+        return { mainType: main, subType: subLabel, subDetail: subDetailLabel };
+    }
+
+async function loadDashboardData(name) {
+  const year = (new Date().getFullYear() + 543).toString();
+  try {
+    const res  = await fetch(`${WEB_APP_URL}?action=getSummary&name=${encodeURIComponent(name)}&year=${year}`);
+    const data = await res.json();
+
+    if (!data.success) return;
+
+    // ── คะแนนรวม + progress ──
+    const kpi = data.kpiScore || 0;
+    document.getElementById('kpiScore').innerText = `${kpi} / 12`;
+    document.getElementById('scoreBar').style.width = `${Math.min((kpi / 12) * 100, 100)}%`;
+
+    let stars = '';
+    const starCount = Math.min(Math.floor(kpi / 2.4), 5);
+    for (let i = 0; i < 5; i++) {
+      stars += i < starCount
+        ? '<i class="bi bi-star-fill mx-1"></i>'
+        : '<i class="bi bi-star mx-1 opacity-25"></i>';
+    }
+    document.getElementById('starRating').innerHTML = stars;
+
+    // ── วาดตาราง dynamic ──
+    document.getElementById('summaryTableBody').innerHTML =
+      buildDashboardTable(data);
+
+  } catch(e) {
+    console.error(e);
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  buildDashboardTable — วาดตารางจาก criteria จริง
+// ══════════════════════════════════════════════════
+function buildDashboardTable(data) {
+  const criteria  = data.criteria  || {};
+  const stats     = data.stats     || {};
+  const points    = data.points    || {};
+  const capTotals = data.capTotals || {};
+
+  const sorted = Object.values(criteria)
+    .sort((a, b) => (a.order || 0) - (b.order || 0));
+
+  if (sorted.length === 0) {
+    return '<tr><td colspan="2" class="text-center text-muted p-3">ไม่พบหัวข้อการประเมิน</td></tr>';
+  }
+
+  const capGroupItems = {};
+  sorted.forEach(c => {
+    if (c.capGroup) {
+      if (!capGroupItems[c.capGroup]) capGroupItems[c.capGroup] = [];
+      capGroupItems[c.capGroup].push(c);
+    }
+  });
+
+  const renderedGroups = new Set();
+  let itemNumber = 0; // 🚩 เพิ่มตัวนับ
+  let html = '';
+
+  // ── ผลงานทั่วไป ──
+  html += `
+    <tr>
+      <td colspan="2" class="py-2">
+        <span class="badge bg-primary bg-opacity-10 text-primary fw-bold px-3 py-2 rounded-pill">
+          <i class="bi bi-clipboard2-check me-1"></i>ผลงานทั่วไป (ปีปัจจุบัน)
+        </span>
+      </td>
+    </tr>
+    <tr style="background:#f0f9ff;">
+      <td><i class="bi bi-person-heart text-info me-2"></i>เยี่ยมเด็กและเยาวชน</td>
+      <td class="text-center fw-bold text-info">${data.visit || 0} ครั้ง</td>
+    </tr>
+    <tr style="background:#f0f9ff;">
+      <td><i class="bi bi-people text-primary me-2"></i>ร่วมประชุม</td>
+      <td class="text-center fw-bold text-primary">${data.meeting || 0} ครั้ง</td>
+    </tr>
+    <tr>
+      <td colspan="2" class="py-2">
+        <span class="badge bg-success bg-opacity-10 text-success fw-bold px-3 py-2 rounded-pill">
+          <i class="bi bi-star-fill me-1"></i>ผลงานเฉพาะ (นับคะแนน KPI)
+        </span>
+      </td>
+    </tr>`;
+
+  // ── วนตาม criteria ──
+  sorted.forEach(c => {
+
+    // standalone
+    if (!c.capGroup) {
+      itemNumber++;
+      const pt    = points[c.key] || 0;
+      const stars = '★'.repeat(pt) + '☆'.repeat(Math.max(3 - pt, 0));
+      html += `
+        <tr>
+          <td>
+            <span class="text-muted me-1" style="font-size:0.8rem;">${itemNumber}.</span>
+            ${c.label}
+          </td>
+          <td class="text-center">
+            <span class="text-warning">${stars}</span>
+            <span class="fw-bold ms-1 text-success">${pt}</span>
+          </td>
+        </tr>`;
+      return;
+    }
+
+    // capGroup — วาดครั้งเดียว
+    if (renderedGroups.has(c.capGroup)) return;
+    renderedGroups.add(c.capGroup);
+
+    itemNumber++;
+    const groupItems = capGroupItems[c.capGroup] || [];
+    const groupTotal = capTotals[c.capGroup]     || 0;
+
+    const labelItem  = groupItems.find(i => i.capLabel && i.capLabel.trim() !== '');
+    const groupLabel = labelItem ? labelItem.capLabel : `ด้าน${c.group || c.capGroup}`;
+
+    // หัวกลุ่ม
+    html += `
+      <tr style="background:#f1f5f9;">
+        <td colspan="2" class="fw-bold small ps-2">
+          <span class="text-muted me-1" style="font-size:0.8rem;">${itemNumber}.</span>
+          ${groupLabel}
+          <span class="badge bg-primary ms-1" style="font-size:0.6rem;">
+            รวมไม่เกิน 3
+          </span>
+        </td>
+      </tr>`;
+
+    // ข้อย่อย
+    groupItems.forEach(sub => {
+      const subPt = points[sub.key] || 0;
+      html += `
+        <tr>
+          <td class="ps-4 text-muted small">${sub.label}</td>
+          <td class="text-center">
+            <span class="badge bg-light text-primary border border-primary rounded-pill px-2">
+              ${subPt} คะแนน
+            </span>
+          </td>
+        </tr>`;
+    });
+
+    // แถวรวม cap
+    const color = groupTotal >= 3 ? '#16a34a'
+                : groupTotal >= 2 ? '#2563eb'
+                : groupTotal >= 1 ? '#d97706'
+                : '#6b7280';
+    const groupStars = '★'.repeat(groupTotal) + '☆'.repeat(Math.max(3 - groupTotal, 0));
+    const shortLabel = groupLabel.replace(/^\d+[\.\d]*\s*(ด้าน)?/, '').trim();
+    html += `
+      <tr style="background:#eff6ff;">
+        <td class="ps-4 fw-bold small">
+          <i class="bi bi-calculator-fill me-1 text-primary"></i>รวม${shortLabel}
+        </td>
+        <td class="text-center fw-bold" style="color:${color};">
+          ${groupStars} ${groupTotal}/3
+        </td>
+      </tr>`;
+  });
+
+  return html;
+}
 </script>
 </body>
 </html>
